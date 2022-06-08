@@ -54,6 +54,34 @@ const userSchema = [
   body("profile").not().isEmpty().withMessage("Profile Cannot Empty !"),
 ];
 
+const storeSchema = [
+  body("name").not().isEmpty().withMessage("Store Name Cannot Empty !"),
+  body("region").not().isEmpty().withMessage("Region Cannot Empty !"),
+  body("currency").not().isEmpty().withMessage("Currency Cannot Empty !"),
+  body("type")
+    .not()
+    .isEmpty()
+    .withMessage("Type Cannot Empty !")
+    .isInt({ min: 0, max: 1 })
+    .withMessage("Type is 0 or 1 !"),
+];
+
+const inventorySchema = [
+  body("name").not().isEmpty().withMessage("Store Name Cannot Empty !"),
+  body("quantity")
+    .not()
+    .isEmpty()
+    .withMessage("Quantity No Cannot Empty !")
+    .isInt()
+    .withMessage("Quantity Harus Angka !"),
+  body("sellingPrice")
+    .not()
+    .isEmpty()
+    .withMessage("Selling Price No Cannot Empty !")
+    .isInt()
+    .withMessage("Selling Price Harus Angka !"),
+];
+
 const requestValidator = {
   // Validator (Passing Error state)
   validateRequest: validateRequest,
@@ -62,6 +90,10 @@ const requestValidator = {
   loginSchema: loginSchema,
   // User
   userSchema: userSchema,
+  // Store
+  storeSchema: storeSchema,
+  // Inventory
+  inventorySchema: inventorySchema,
 };
 
 module.exports = {

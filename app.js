@@ -22,7 +22,9 @@ app.use(
 // import routes
 const authRoutes = require("./src/routes/auth.route");
 const userRoutes = require("./src/routes/user.route");
-// const storeRoute = require("./src/routes/store.route");
+const storeRoutes = require("./src/routes/store.route");
+const inventoryRoutes = require("./src/routes/inventory.route");
+const paymentMethodRoutes = require("./src/routes/paymentMethod.route");
 
 // User Routes
 app.use("/user", userRoutes);
@@ -30,8 +32,14 @@ app.use("/user", userRoutes);
 // Auth Routes
 app.use("/auth", authRoutes);
 
-// // Store Routes
-// app.use("/store", storeRoute);
+// Store Routes
+app.use("/store", storeRoutes);
+
+// Inventory Routes
+app.use("/inventory", inventoryRoutes);
+
+// Payment Method
+app.use("/payment-method", paymentMethodRoutes);
 
 // Error Routes
 app.use((error, req, res, next) => {

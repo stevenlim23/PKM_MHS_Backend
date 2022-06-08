@@ -18,5 +18,7 @@ const db = {};
 db.User = require("./user.model")(sequelize, Sequelize);
 db.Auth = require("./auth.model")(sequelize, Sequelize);
 db.Store = require("./store.model")(sequelize, Sequelize);
+db.Inventory = require("./inventory.model")(sequelize, Sequelize);
+db.PaymentMethod = require("./paymentMethod.model")(sequelize, Sequelize);
 
 module.exports = db;

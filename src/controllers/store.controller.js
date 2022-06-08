@@ -77,9 +77,9 @@ exports.updateStore = errorHandler.wrapAsync(async (req, res) => {
       where: { storeId: id },
     }).then((data) => {
       if (data == 1) {
-        res.send("Toko Berhasil Diupdate");
+        res.send("Store Berhasil Diupdate");
       } else {
-        res.status(400).send("Toko Gagal Dihapus");
+        res.status(400).send("Store Gagal Dihapus");
       }
     });
   }
