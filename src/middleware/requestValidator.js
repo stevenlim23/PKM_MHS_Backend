@@ -54,6 +54,18 @@ const userSchema = [
   body("profile").not().isEmpty().withMessage("Profile Cannot Empty !"),
 ];
 
+const supplierSchema = [
+  body("name").not().isEmpty().withMessage("Supplier Name Cannot Empty !"),
+  body("telephone")
+    .not()
+    .isEmpty()
+    .withMessage("Telephone Cannot Empty !")
+    .isInt()
+    .withMessage("Telephone Harus Angka !"),
+  body("address").not().isEmpty().withMessage("Address Cannot Empty !"),
+  body("email").not().isEmpty().withMessage("Email Cannot Empty !"),
+];
+
 const storeSchema = [
   body("name").not().isEmpty().withMessage("Store Name Cannot Empty !"),
   body("region").not().isEmpty().withMessage("Region Cannot Empty !"),
@@ -82,6 +94,23 @@ const inventorySchema = [
     .withMessage("Selling Price Harus Angka !"),
 ];
 
+const expenseSchema = [
+  body("refNumber")
+    .not()
+    .isEmpty()
+    .withMessage("Ref Number Cannot Empty !")
+    .isInt()
+    .withMessage("Ref Number Harus Angka !"),
+  body("date").not().isEmpty().withMessage("Date Cannot Empty !"),
+  body("name").not().isEmpty().withMessage("Expense Name Cannot Empty !"),
+  body("total")
+    .not()
+    .isEmpty()
+    .withMessage("Total No Cannot Empty !")
+    .isInt()
+    .withMessage("Total Harus Angka !"),
+];
+
 const requestValidator = {
   // Validator (Passing Error state)
   validateRequest: validateRequest,
@@ -90,10 +119,14 @@ const requestValidator = {
   loginSchema: loginSchema,
   // User
   userSchema: userSchema,
+  // Supplier
+  supplierSchema: supplierSchema,
   // Store
   storeSchema: storeSchema,
   // Inventory
   inventorySchema: inventorySchema,
+  // Expense
+  expenseSchema: expenseSchema,
 };
 
 module.exports = {

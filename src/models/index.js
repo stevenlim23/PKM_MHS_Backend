@@ -18,7 +18,10 @@ const db = {};
 db.User = require("./user.model")(sequelize, Sequelize);
 db.Auth = require("./auth.model")(sequelize, Sequelize);
 db.Store = require("./store.model")(sequelize, Sequelize);
+db.Supplier = require("./supplier.model")(sequelize, Sequelize);
 db.Inventory = require("./inventory.model")(sequelize, Sequelize);
 db.PaymentMethod = require("./paymentMethod.model")(sequelize, Sequelize);
+db.Saldo = require("./saldo.model")(sequelize, Sequelize);
+db.Expense = require("./expense.model")(sequelize, Sequelize);
 
 module.exports = db;
