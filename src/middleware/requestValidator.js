@@ -94,6 +94,12 @@ const inventorySchema = [
     .withMessage("Selling Price No Cannot Empty !")
     .isInt()
     .withMessage("Selling Price Harus Angka !"),
+  body("isService")
+    .not()
+    .isEmpty()
+    .withMessage("isService Cannot Empty !")
+    .isInt({ min: 0, max: 1 })
+    .withMessage("isService is 0 or 1 !"),
 ];
 
 const expenseSchema = [

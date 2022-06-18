@@ -23,6 +23,10 @@ module.exports = (sequelize, Sequelize) => {
       sellingPrice: {
         type: DataTypes.INTEGER,
       },
+      isService: {
+        type: DataTypes.TINYINT,
+        defaultValue: 0,
+      },
       is_deleted: {
         type: DataTypes.TINYINT,
         defaultValue: 0,
