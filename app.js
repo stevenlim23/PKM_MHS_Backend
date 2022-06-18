@@ -27,6 +27,7 @@ const supplierRoutes = require("./src/routes/supplier.route");
 const inventoryRoutes = require("./src/routes/inventory.route");
 const paymentMethodRoutes = require("./src/routes/paymentMethod.route");
 const expenseRoutes = require("./src/routes/expense.route");
+const purchaseRoutes = require("./src/routes/purchase.route");
 
 // User Routes
 app.use("/user", userRoutes);
@@ -48,6 +49,9 @@ app.use("/payment-method", paymentMethodRoutes);
 
 // Expense
 app.use("/expense", expenseRoutes);
+
+// Purchase
+app.use("/purchase", purchaseRoutes);
 
 // Error Routes
 app.use((error, req, res, next) => {

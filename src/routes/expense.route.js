@@ -6,7 +6,7 @@ const expenseController = require("../controllers/expense.controller");
 
 // Helper
 const { requestValidator } = require("../middleware/requestValidator");
-const { authJwt } = require("../middleware");
+const { authJwt, verifyStore } = require("../middleware");
 
 // get all Inventory
 router.get("/", [authJwt.verifyToken], expenseController.getExpenseList);
@@ -17,6 +17,7 @@ router.post(
   [
     requestValidator.expenseSchema,
     requestValidator.validateRequest,
+    verifyStore.checkStoreId,
     authJwt.verifyToken,
   ],
   expenseController.createNewExpense

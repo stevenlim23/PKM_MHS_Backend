@@ -23,5 +23,9 @@ db.Inventory = require("./inventory.model")(sequelize, Sequelize);
 db.PaymentMethod = require("./paymentMethod.model")(sequelize, Sequelize);
 db.Saldo = require("./saldo.model")(sequelize, Sequelize);
 db.Expense = require("./expense.model")(sequelize, Sequelize);
+// Purchase
+db.Purchase = require("./purchase.model")(sequelize, Sequelize);
+db.PurchaseDetail = require("./purchaseDetail.model")(sequelize, Sequelize);
+db.PurchasePayment = require("./purchasePayment.model")(sequelize, Sequelize);
 
 module.exports = db;
