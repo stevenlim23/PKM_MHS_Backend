@@ -3,34 +3,28 @@ const { DataTypes } = require("sequelize");
 const { v4 } = require("uuid");
 
 module.exports = (sequelize, Sequelize) => {
-  const Inventory = sequelize.define(
-    "tbl_inventory",
+  const salesPayment = sequelize.define(
+    "tbl_sales_payment",
     {
-      inventoryId: {
+      salesPaymentId: {
         type: DataTypes.STRING,
         primaryKey: true,
         defaultValue: v4,
       },
-      storeId: {
+      salesId: {
         type: DataTypes.STRING,
       },
-      name: {
+      methodId: {
         type: DataTypes.STRING,
       },
-      quantity: {
+      date: {
+        type: DataTypes.DATE,
+      },
+      nominal: {
         type: DataTypes.INTEGER,
-        defaultValue: 0,
       },
-      sellingPrice: {
+      code: {
         type: DataTypes.INTEGER,
-      },
-      isService: {
-        type: DataTypes.TINYINT,
-        defaultValue: 0,
-      },
-      is_deleted: {
-        type: DataTypes.TINYINT,
-        defaultValue: 0,
       },
     },
     {
@@ -39,5 +33,5 @@ module.exports = (sequelize, Sequelize) => {
     }
   );
 
-  return Inventory;
+  return salesPayment;
 };

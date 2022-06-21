@@ -27,5 +27,9 @@ db.Expense = require("./expense.model")(sequelize, Sequelize);
 db.Purchase = require("./purchase.model")(sequelize, Sequelize);
 db.PurchaseDetail = require("./purchaseDetail.model")(sequelize, Sequelize);
 db.PurchasePayment = require("./purchasePayment.model")(sequelize, Sequelize);
+// Sales
+db.Sales = require("./sales.model")(sequelize, Sequelize);
+db.SalesDetail = require("./salesDetail.model")(sequelize, Sequelize);
+db.SalesPayment = require("./salesPayment.model")(sequelize, Sequelize);
 
 module.exports = db;

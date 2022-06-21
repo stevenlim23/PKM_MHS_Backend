@@ -34,9 +34,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       status: {
         type: DataTypes.TINYINT,
+        defaultValue: 1,
       },
       is_deleted: {
         type: DataTypes.TINYINT,
+        defaultValue: 0,
       },
     },
     {

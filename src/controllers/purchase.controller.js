@@ -159,7 +159,15 @@ exports.createNewPurchase = errorHandler.wrapAsync(async (req, res) => {
         purchaseId: lastPurchaseId,
       };
 
+      const newInventoryData = {
+        quantity: newPurchaseDetailData[i]["quantity"],
+      };
+
       PurchaseDetail.create(newDetailData);
+
+      Inventory.increment(newInventoryData, {
+        where: { inventoryId: newPurchaseDetailData[i]["inventoryId"] },
+      });
     }
 
     res.send("Purchase Berhasil Dibuat !");
