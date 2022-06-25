@@ -47,6 +47,7 @@ router.post(
     requestValidator.purchasePaymentSchema,
     requestValidator.validateRequest,
     verifyPurchase.checkPurchaseId,
+    verifyPurchase.checkPurchasePayment,
     verifyPaymentMethod.checkPaymentMethodId,
     authJwt.verifyToken,
   ],

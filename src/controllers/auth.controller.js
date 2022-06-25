@@ -46,6 +46,7 @@ exports.loginUser = errorHandler.wrapAsync(async (req, res) => {
         msg: "Login Berhasil !",
         authToken,
         user: {
+          userId: user.userId,
           name: user.firstName + " " + user.lastName,
           email: user.email,
           storeId: user.storeId,

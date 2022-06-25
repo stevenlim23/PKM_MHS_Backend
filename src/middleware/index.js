@@ -7,6 +7,7 @@ const verifyInventory = require("./verifyInventory");
 const verifyPaymentMethod = require("./verifyPaymentMethod");
 const verifyPurchase = require("./verifyPurchase");
 const verifySales = require("./verifySales");
+const verifyUser = require("./verifyUser");
 
 // Error Handler
 const errorHandler = require("./errorHandler");
@@ -21,4 +22,5 @@ module.exports = {
   verifyPaymentMethod,
   verifyPurchase,
   verifySales,
+  verifyUser,
 };

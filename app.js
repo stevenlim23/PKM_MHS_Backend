@@ -29,6 +29,7 @@ const paymentMethodRoutes = require("./src/routes/paymentMethod.route");
 const expenseRoutes = require("./src/routes/expense.route");
 const purchaseRoutes = require("./src/routes/purchase.route");
 const salesRoutes = require("./src/routes/sales.route");
+const stockOpnameRoutes = require("./src/routes/stockOpname.route");
 
 // User Routes
 app.use("/user", userRoutes);
@@ -56,6 +57,9 @@ app.use("/purchase", purchaseRoutes);
 
 // Sales
 app.use("/sales", salesRoutes);
+
+// Stock Opname
+app.use("/stock-opname", stockOpnameRoutes);
 
 // Error Routes
 app.use((error, req, res, next) => {

@@ -270,6 +270,41 @@ const salesPaymentSchema = [
   body("code").not().isEmpty().withMessage("Code Cannot Empty !"),
 ];
 
+const stockOpnameSchema = [
+  body("userId").not().isEmpty().withMessage("User ID Cannot Empty !"),
+  body("storeId").not().isEmpty().withMessage("Store ID Cannot Empty !"),
+  body("date").not().isEmpty().withMessage("Date Cannot Empty !"),
+  body("description").not().isEmpty().withMessage("Description Cannot Empty !"),
+  // Check Item Detail
+  body("itemDetail").isArray().withMessage("Item Detail Must An Array"),
+  body("itemDetail.*.inventoryId")
+    .not()
+    .isEmpty()
+    .withMessage("Inventory ID Cannot Empty !"),
+  body("itemDetail.*.qtyEnd")
+    .not()
+    .isEmpty()
+    .withMessage("End Quantity Cannot Empty !")
+    .isInt()
+    .withMessage("End Quantity Harus Angka !"),
+  body("itemDetail.*.qtyStart")
+    .not()
+    .isEmpty()
+    .withMessage("Start Quantity Cannot Empty !")
+    .isInt()
+    .withMessage("Start Quantity Harus Angka !"),
+  body("itemDetail.*.difference")
+    .not()
+    .isEmpty()
+    .withMessage("Difference Cannot Empty !")
+    .isInt()
+    .withMessage("Difference Harus Angka !"),
+  body("itemDetail.*.description")
+    .not()
+    .isEmpty()
+    .withMessage("description Cannot Empty !"),
+];
+
 const requestValidator = {
   // Validator (Passing Error state)
   validateRequest: validateRequest,
@@ -292,6 +327,8 @@ const requestValidator = {
   // Sales
   salesSchema: salesSchema,
   salesPaymentSchema: salesPaymentSchema,
+  // Stock Opname
+  stockOpnameSchema: stockOpnameSchema,
 };
 
 module.exports = {

@@ -31,5 +31,11 @@ db.PurchasePayment = require("./purchasePayment.model")(sequelize, Sequelize);
 db.Sales = require("./sales.model")(sequelize, Sequelize);
 db.SalesDetail = require("./salesDetail.model")(sequelize, Sequelize);
 db.SalesPayment = require("./salesPayment.model")(sequelize, Sequelize);
+// Stock Opname
+db.StockOpname = require("./stockOpname.model")(sequelize, Sequelize);
+db.StockOpnameDetail = require("./stockOpnameDetail.model")(
+  sequelize,
+  Sequelize
+);
 
 module.exports = db;

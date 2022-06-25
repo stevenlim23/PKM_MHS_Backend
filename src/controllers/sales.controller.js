@@ -14,9 +14,6 @@ SalesDetail.belongsTo(Sales, { foreignKey: "salesId" });
 SalesPayment.hasOne(Sales, { foreignKey: "salesId" });
 Sales.belongsTo(SalesPayment, { foreignKey: "salesId" });
 
-// Supplier.hasOne(Sales, { foreignKey: "supplierId" });
-// Sales.belongsTo(Supplier, { foreignKey: "supplierId" });
-
 Store.hasOne(Sales, { foreignKey: "storeId" });
 Sales.belongsTo(Store, { foreignKey: "storeId" });
 
@@ -61,12 +58,6 @@ const { errorHandler } = require("../middleware");
 exports.getSalesList = errorHandler.wrapAsync(async (req, res) => {
   const salesListData = await Sales.findAll({
     attributes: listAttributes,
-    // include: [
-    //   {
-    //     model: Supplier,
-    //     attributes: ["supplierId", "name"],
-    //   },
-    // ],
   });
 
   if (!salesListData.length)
@@ -150,6 +141,7 @@ exports.createNewSales = errorHandler.wrapAsync(async (req, res) => {
       const newDetailData = {
         ...newSalesDetailData[i],
         salesId: lastSalesId,
+        quantityBuy: newSalesDetailData[i]["quantity"],
       };
 
       const newInventoryData = {

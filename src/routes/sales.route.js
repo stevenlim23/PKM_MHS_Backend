@@ -9,9 +9,7 @@ const { requestValidator } = require("../middleware/requestValidator");
 const {
   authJwt,
   verifyStore,
-  verifySupplier,
   verifyPaymentMethod,
-  verifyPurchase,
   verifySales,
 } = require("../middleware");
 
@@ -47,6 +45,7 @@ router.post(
     requestValidator.salesPaymentSchema,
     requestValidator.validateRequest,
     verifySales.verifySalesId,
+    verifySales.checkSalesPayment,
     verifyPaymentMethod.checkPaymentMethodId,
     authJwt.verifyToken,
   ],
