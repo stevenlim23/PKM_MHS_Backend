@@ -22,6 +22,7 @@ app.use(
 // import routes
 const authRoutes = require("./src/routes/auth.route");
 const userRoutes = require("./src/routes/user.route");
+const dashboardRoutes = require("./src/routes/dashboard.route");
 const storeRoutes = require("./src/routes/store.route");
 const supplierRoutes = require("./src/routes/supplier.route");
 const inventoryRoutes = require("./src/routes/inventory.route");
@@ -36,6 +37,9 @@ app.use("/user", userRoutes);
 
 // Auth Routes
 app.use("/auth", authRoutes);
+
+// Dashboard Routes
+app.use("/dashboard", dashboardRoutes);
 
 // Store Routes
 app.use("/store", storeRoutes);
