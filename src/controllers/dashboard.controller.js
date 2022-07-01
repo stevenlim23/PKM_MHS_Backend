@@ -133,7 +133,7 @@ exports.getTableData = errorHandler.wrapAsync(async (req, res) => {
       },
     ],
     where: {
-      status: 2,
+      status: { [Op.or]: [1, 2] },
     },
   });
 
@@ -148,7 +148,7 @@ exports.getTableData = errorHandler.wrapAsync(async (req, res) => {
       "totalPayment",
     ],
     where: {
-      status: 2,
+      status: { [Op.or]: [1, 2] },
     },
   });
 
