@@ -127,7 +127,7 @@ exports.getPaymentDetail = errorHandler.wrapAsync(async (req, res) => {
 exports.createNewSales = errorHandler.wrapAsync(async (req, res) => {
   var lastSalesId = null;
 
-  const newSalesData = req.body;
+  const newSalesData = { ...req.body, status: "1" };
   const newSalesDetailData = req.body.itemDetail;
 
   if (!Object.keys(newSalesData).length) {
@@ -176,6 +176,14 @@ exports.createNewSalesPayment = errorHandler.wrapAsync(async (req, res) => {
     };
 
     await Saldo.create(newSaldoData);
+
+    const updatedNominalSales = {
+      dueNominal: req.body.nominal,
+    };
+
+    await Sales.decrement(updatedNominalSales, {
+      where: { salesId: req.body.salesId },
+    });
 
     res.send("Sales Payment Berhasil Diinput !");
   }

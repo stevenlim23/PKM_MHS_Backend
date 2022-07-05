@@ -135,12 +135,12 @@ const purchaseSchema = [
     .withMessage("Due Nominmal Cannot Empty !")
     .isInt()
     .withMessage("Due Nominmal Harus Angka !"),
-  body("status")
-    .not()
-    .isEmpty()
-    .withMessage("Status Cannot Empty !")
-    .isInt({ min: 1, max: 3 })
-    .withMessage("Status is 1, 2 or 3 !"),
+  // body("status")
+  //   .not()
+  //   .isEmpty()
+  //   .withMessage("Status Cannot Empty !")
+  //   .isInt({ min: 1, max: 3 })
+  //   .withMessage("Status is 1, 2 or 3 !"),
   body("totalPayment")
     .not()
     .isEmpty()
@@ -213,12 +213,12 @@ const salesSchema = [
     .withMessage("Due Nominmal Cannot Empty !")
     .isInt()
     .withMessage("Due Nominmal Harus Angka !"),
-  body("status")
-    .not()
-    .isEmpty()
-    .withMessage("Status Cannot Empty !")
-    .isInt({ min: 1, max: 3 })
-    .withMessage("Status is 1, 2 or 3 !"),
+  // body("status")
+  //   .not()
+  //   .isEmpty()
+  //   .withMessage("Status Cannot Empty !")
+  //   .isInt({ min: 1, max: 3 })
+  //   .withMessage("Status is 1, 2 or 3 !"),
   body("discount")
     .not()
     .isEmpty()

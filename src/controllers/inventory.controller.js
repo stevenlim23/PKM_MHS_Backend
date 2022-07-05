@@ -22,10 +22,11 @@ exports.getInventoryList = errorHandler.wrapAsync(async (req, res) => {
     attributes: fieldAttributes,
   });
 
-  if (!inventoryListData.length)
+  if (!inventoryListData.length) {
     throw new errorHandler.ExpressError(404, "Inventory Tidak Ditemukan");
-
-  res.send(inventoryListData);
+  } else {
+    res.send(inventoryListData);
+  }
 });
 
 // get Inventory by ID

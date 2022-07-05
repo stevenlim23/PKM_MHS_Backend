@@ -144,7 +144,7 @@ exports.getPaymentDetail = errorHandler.wrapAsync(async (req, res) => {
 exports.createNewPurchase = errorHandler.wrapAsync(async (req, res) => {
   var lastPurchaseId = null;
 
-  const newPurchaseData = req.body;
+  const newPurchaseData = { ...req.body, status: "1" };
   const newPurchaseDetailData = req.body.itemDetail;
 
   if (!Object.keys(newPurchaseData).length) {
@@ -184,12 +184,25 @@ exports.createNewPurchasePayment = errorHandler.wrapAsync(async (req, res) => {
     throw new errorHandler.ExpressError(400, "Bad Request");
   } else {
     await PurchasePayment.create(newPaymentData);
+
     newSaldoData = {
       ...newSaldoData,
       date: req.body.date,
       value: -req.body.nominal,
     };
+
     await Saldo.create(newSaldoData);
+
+    const updatedNominalPurchase = {
+      dueNominal: req.body.nominal,
+    };
+
+    await Purchase.decrement(updatedNominalPurchase, {
+      where: { purchaseId: req.body.purchaseId },
+    }).then((result) => {
+      console.log("result", result);
+    });
+
     res.send("Purchase Payment Berhasil Diinput !");
   }
 });
