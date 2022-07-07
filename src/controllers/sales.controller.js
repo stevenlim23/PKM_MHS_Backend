@@ -58,6 +58,9 @@ const { errorHandler } = require("../middleware");
 exports.getSalesList = errorHandler.wrapAsync(async (req, res) => {
   const salesListData = await Sales.findAll({
     attributes: listAttributes,
+    where: {
+      storeId: req.storeId,
+    },
   });
 
   if (!salesListData.length)
@@ -106,9 +109,6 @@ exports.getPaymentDetail = errorHandler.wrapAsync(async (req, res) => {
   const { id } = req.params;
 
   const salesPaymentDetail = await SalesPayment.findAll({
-    where: {
-      salesId: id,
-    },
     attributes: salesDetailAttributes,
     include: [
       {
@@ -116,6 +116,9 @@ exports.getPaymentDetail = errorHandler.wrapAsync(async (req, res) => {
         attributes: ["methodId", "name"],
       },
     ],
+    where: {
+      salesId: id,
+    },
   });
 
   if (!salesPaymentDetail.length)

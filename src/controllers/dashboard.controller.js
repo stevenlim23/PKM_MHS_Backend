@@ -164,6 +164,7 @@ exports.getTableData = errorHandler.wrapAsync(async (req, res) => {
     ],
     where: {
       status: { [Op.or]: [1, 2] },
+      storeId: req.storeId,
     },
   });
 
@@ -179,6 +180,7 @@ exports.getTableData = errorHandler.wrapAsync(async (req, res) => {
     ],
     where: {
       status: { [Op.or]: [1, 2] },
+      storeId: req.storeId,
     },
   });
 
@@ -206,6 +208,7 @@ exports.getInventoryData = errorHandler.wrapAsync(async (req, res) => {
     attributes: ["name", "quantity"],
     where: {
       quantity: { [Op.lte]: 10 },
+      storeId: req.storeId,
     },
   });
 
@@ -221,6 +224,7 @@ exports.getInventoryData = errorHandler.wrapAsync(async (req, res) => {
     ],
     limit: 10,
     order: [[col("quantityBuy"), "DESC"]],
+    where: { storeId: req.storeId },
   });
 
   // Assemble Final Dashboard Data

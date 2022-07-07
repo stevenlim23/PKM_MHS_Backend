@@ -51,6 +51,9 @@ exports.getStockOpnameList = errorHandler.wrapAsync(async (req, res) => {
         as: "store",
       },
     ],
+    where: {
+      storeId: req.storeId,
+    },
   });
 
   if (!stockOpnameList.length)

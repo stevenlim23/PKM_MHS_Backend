@@ -67,6 +67,9 @@ exports.getPurchaseList = errorHandler.wrapAsync(async (req, res) => {
         attributes: ["supplierId", "name"],
       },
     ],
+    where: {
+      storeId: req.storeId,
+    },
   });
 
   if (!purchaseListData.length)

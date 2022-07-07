@@ -18,6 +18,9 @@ const { errorHandler } = require("../middleware");
 exports.getExpenseList = errorHandler.wrapAsync(async (req, res) => {
   const expenseListData = await Expense.findAll({
     attributes: fieldAttributes,
+    where: {
+      storeId: req.storeId,
+    },
   });
 
   if (!expenseListData.length)

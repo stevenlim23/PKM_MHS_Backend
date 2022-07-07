@@ -19,6 +19,7 @@ exports.getSupplierList = errorHandler.wrapAsync(async (req, res) => {
   const supplierListData = await Supplier.findAll({
     where: {
       is_deleted: 0,
+      storeId: req.storeId,
     },
     attributes: fieldAttributes,
   });

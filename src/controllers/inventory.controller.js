@@ -19,6 +19,7 @@ exports.getInventoryList = errorHandler.wrapAsync(async (req, res) => {
   const inventoryListData = await Inventory.findAll({
     where: {
       is_deleted: 0,
+      storeId: req.storeId,
     },
     attributes: fieldAttributes,
   });
