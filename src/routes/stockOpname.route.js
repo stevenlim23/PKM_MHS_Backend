@@ -28,8 +28,6 @@ router.post(
   [
     requestValidator.stockOpnameSchema,
     requestValidator.validateRequest,
-    verifyStore.checkStoreId,
-    verifyUser.checkUserId,
     authJwt.verifyToken,
   ],
   stockOpnameController.createNewStockOpname

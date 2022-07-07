@@ -17,6 +17,9 @@ module.exports = (sequelize, Sequelize) => {
       inventoryId: {
         type: DataTypes.STRING,
       },
+      userId: {
+        type: DataTypes.STRING,
+      },
       qtyStart: {
         type: DataTypes.INTEGER,
       },

@@ -67,6 +67,11 @@ exports.getStockOpnameDetail = errorHandler.wrapAsync(async (req, res) => {
     attributes: listAttributes,
     include: [
       {
+        model: User,
+        attributes: ["userId", "firstName", "lastName"],
+        as: "user",
+      },
+      {
         as: "itemDetail",
         model: StockOpnameDetail,
         attributes: ["qtyStart", "qtyEnd", "difference", "description"],
@@ -97,7 +102,11 @@ exports.getStockOpnameDetail = errorHandler.wrapAsync(async (req, res) => {
 exports.createNewStockOpname = errorHandler.wrapAsync(async (req, res) => {
   var lastStockOpnameId = null;
 
-  const newStockOpnameData = req.body;
+  const newStockOpnameData = {
+    ...req.body,
+    userId: req.userId,
+    storeId: req.storeId,
+  };
   const newStockOpnameDetailData = req.body.itemDetail;
 
   if (!Object.keys(newStockOpnameData).length) {
@@ -111,6 +120,7 @@ exports.createNewStockOpname = errorHandler.wrapAsync(async (req, res) => {
       const newDetailData = {
         ...newStockOpnameDetailData[i],
         stockOpnameId: lastStockOpnameId,
+        userId: req.userId,
         qtyStart: newStockOpnameDetailData[i]["qtyStart"],
         qtyEnd: newStockOpnameDetailData[i]["qtyEnd"],
       };

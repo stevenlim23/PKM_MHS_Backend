@@ -33,7 +33,12 @@ exports.getDashboardData = errorHandler.wrapAsync(async (req, res) => {
   const salesTotalData = await Sales.findAll({
     raw: true,
     attributes: [[fn("SUM", col("totalPayment")), "totalPayment"]],
-    where: where(fn("YEAR", col("transDate")), 2022),
+    where: {
+      [Op.and]: [
+        where(fn("YEAR", col("transDate")), new Date().getFullYear()),
+        { storeId: req.storeId },
+      ],
+    },
   });
 
   const salesMonthlyData = await Sales.findAll({
@@ -42,7 +47,12 @@ exports.getDashboardData = errorHandler.wrapAsync(async (req, res) => {
       [fn("MONTH", col("transDate")), "transMonth"],
       [fn("SUM", col("totalPayment")), "totalPayment"],
     ],
-    where: where(fn("YEAR", col("transDate")), 2022),
+    where: {
+      [Op.and]: [
+        where(fn("YEAR", col("transDate")), new Date().getFullYear()),
+        { storeId: req.storeId },
+      ],
+    },
     group: ["transMonth"],
   });
 
@@ -56,7 +66,12 @@ exports.getDashboardData = errorHandler.wrapAsync(async (req, res) => {
   const purchaseTotalData = await Purchase.findAll({
     raw: true,
     attributes: [[fn("SUM", col("totalPayment")), "totalPayment"]],
-    where: where(fn("YEAR", col("transDate")), 2022),
+    where: {
+      [Op.and]: [
+        where(fn("YEAR", col("transDate")), new Date().getFullYear()),
+        { storeId: req.storeId },
+      ],
+    },
   });
 
   const purchaseMonthlyData = await Purchase.findAll({
@@ -65,7 +80,12 @@ exports.getDashboardData = errorHandler.wrapAsync(async (req, res) => {
       [fn("MONTH", col("transDate")), "transMonth"],
       [fn("SUM", col("totalPayment")), "totalPayment"],
     ],
-    where: where(fn("YEAR", col("transDate")), 2022),
+    where: {
+      [Op.and]: [
+        where(fn("YEAR", col("transDate")), new Date().getFullYear()),
+        { storeId: req.storeId },
+      ],
+    },
     group: ["transMonth"],
   });
 
@@ -79,7 +99,12 @@ exports.getDashboardData = errorHandler.wrapAsync(async (req, res) => {
   const expenseTotalData = await Expense.findAll({
     raw: true,
     attributes: [[fn("SUM", col("total")), "totalPayment"]],
-    where: where(fn("YEAR", col("date")), 2022),
+    where: {
+      [Op.and]: [
+        where(fn("YEAR", col("date")), new Date().getFullYear()),
+        { storeId: req.storeId },
+      ],
+    },
   });
 
   const expenseMonthlyData = await Expense.findAll({
@@ -88,7 +113,12 @@ exports.getDashboardData = errorHandler.wrapAsync(async (req, res) => {
       [fn("MONTH", col("date")), "transMonth"],
       [fn("SUM", col("total")), "totalPayment"],
     ],
-    where: where(fn("YEAR", col("date")), 2022),
+    where: {
+      [Op.and]: [
+        where(fn("YEAR", col("date")), new Date().getFullYear()),
+        { storeId: req.storeId },
+      ],
+    },
     group: ["transMonth"],
   });
 

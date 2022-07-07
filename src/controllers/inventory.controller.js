@@ -7,6 +7,7 @@ const fieldAttributes = [
   "name",
   "quantity",
   "sellingPrice",
+  "isService",
   "is_deleted",
 ];
 

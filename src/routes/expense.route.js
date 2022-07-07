@@ -17,7 +17,6 @@ router.post(
   [
     requestValidator.expenseSchema,
     requestValidator.validateRequest,
-    verifyStore.checkStoreId,
     authJwt.verifyToken,
   ],
   expenseController.createNewExpense

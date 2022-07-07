@@ -2,7 +2,14 @@ const Model = require("../models");
 const Expense = Model.Expense;
 const Saldo = Model.Saldo;
 
-const fieldAttributes = ["expenseId", "refNumber", "date", "name", "total"];
+const fieldAttributes = [
+  "expenseId",
+  "storeId",
+  "refNumber",
+  "date",
+  "name",
+  "total",
+];
 
 // Helper
 const { errorHandler } = require("../middleware");
@@ -21,7 +28,7 @@ exports.getExpenseList = errorHandler.wrapAsync(async (req, res) => {
 
 // Create New Inventory
 exports.createNewExpense = errorHandler.wrapAsync(async (req, res) => {
-  const newExpenseData = req.body;
+  const newExpenseData = { ...req.body, storeId: req.storeId };
   let newSaldoData = {};
 
   // Validate request
@@ -32,6 +39,7 @@ exports.createNewExpense = errorHandler.wrapAsync(async (req, res) => {
 
     newSaldoData = {
       ...newSaldoData,
+      storeId: req.storeId,
       date: req.body.date,
       value: -req.body.total,
     };

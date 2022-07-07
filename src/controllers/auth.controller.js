@@ -38,9 +38,13 @@ exports.loginUser = errorHandler.wrapAsync(async (req, res) => {
     }
 
     if (bResult) {
-      const authToken = jwt.sign({ id: user.userId }, config.secret, {
-        expiresIn: "1h",
-      });
+      const authToken = jwt.sign(
+        { id: user.userId, storeId: user.storeId },
+        config.secret,
+        {
+          expiresIn: "1h",
+        }
+      );
 
       return res.status(200).send({
         msg: "Login Berhasil !",

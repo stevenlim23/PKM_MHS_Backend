@@ -109,7 +109,6 @@ const expenseSchema = [
     .withMessage("Ref Number Cannot Empty !")
     .isInt()
     .withMessage("Ref Number Harus Angka !"),
-  body("storeId").not().isEmpty().withMessage("Store ID Cannot Empty !"),
   body("date").not().isEmpty().withMessage("Date Cannot Empty !"),
   body("name").not().isEmpty().withMessage("Expense Name Cannot Empty !"),
   body("total")
@@ -271,8 +270,6 @@ const salesPaymentSchema = [
 ];
 
 const stockOpnameSchema = [
-  body("userId").not().isEmpty().withMessage("User ID Cannot Empty !"),
-  body("storeId").not().isEmpty().withMessage("Store ID Cannot Empty !"),
   body("date").not().isEmpty().withMessage("Date Cannot Empty !"),
   body("description").not().isEmpty().withMessage("Description Cannot Empty !"),
   // Check Item Detail

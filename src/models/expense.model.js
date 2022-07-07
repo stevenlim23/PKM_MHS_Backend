@@ -11,6 +11,9 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true,
         defaultValue: v4,
       },
+      storeId: {
+        type: DataTypes.STRING,
+      },
       refNumber: {
         type: DataTypes.INTEGER,
       },
