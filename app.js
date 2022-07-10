@@ -31,7 +31,7 @@ const expenseRoutes = require("./src/routes/expense.route");
 const purchaseRoutes = require("./src/routes/purchase.route");
 const salesRoutes = require("./src/routes/sales.route");
 const stockOpnameRoutes = require("./src/routes/stockOpname.route");
-// const reportRoutes = require("./src/routes/report.route");
+const reportRoutes = require("./src/routes/report.route");
 
 // User Routes
 app.use("/user", userRoutes);
@@ -67,7 +67,7 @@ app.use("/sales", salesRoutes);
 app.use("/stock-opname", stockOpnameRoutes);
 
 // Report
-// app.use("/report", reportRoutes);
+app.use("/report", reportRoutes);
 
 // Error Routes
 app.use((error, req, res, next) => {

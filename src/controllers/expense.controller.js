@@ -13,6 +13,7 @@ const fieldAttributes = [
 
 // Helper
 const { errorHandler } = require("../middleware");
+const { fn, col } = require("sequelize");
 
 // get all expense list
 exports.getExpenseList = errorHandler.wrapAsync(async (req, res) => {
@@ -40,14 +41,70 @@ exports.createNewExpense = errorHandler.wrapAsync(async (req, res) => {
   } else {
     await Expense.create(newExpenseData);
 
-    newSaldoData = {
-      ...newSaldoData,
-      storeId: req.storeId,
-      date: req.body.date,
-      value: -req.body.total,
-    };
+    const saldoData = await Saldo.findOne({
+      raw: true,
+      attributes: [
+        "saldoId",
+        "storeId",
+        [fn("max", col("date")), "latestDate"],
+        "value",
+      ],
+      where: { storeId: req.storeId },
+    });
 
-    await Saldo.create(newSaldoData);
+    let latestDate = new Date(saldoData["latestDate"]).toDateString();
+    let todayDate = new Date().toDateString();
+
+    if (!saldoData["saldoId"]) {
+      newSaldoData = {
+        ...newSaldoData,
+        storeId: req.storeId,
+        date: req.body.date,
+        value: req.body.total,
+      };
+
+      await Saldo.create(newSaldoData);
+    } else if (latestDate === todayDate) {
+      newSaldoData = {
+        ...newSaldoData,
+        value: Number(saldoData["value"]) - req.body.total,
+      };
+
+      await Saldo.update(newSaldoData, {
+        where: { saldoId: saldoData["saldoId"] },
+      });
+    } else {
+      let latestSaldo = saldoData["value"];
+      let latestDateDB = new Date(saldoData["latestDate"]);
+
+      let targetDay = new Date(
+        new Date().setDate(new Date().getDate() - 1)
+      ).toDateString();
+      let nextDay = latestDate;
+
+      while (nextDay != targetDay) {
+        nextDay = new Date(
+          latestDateDB.setDate(latestDateDB.getDate() + 1)
+        ).toDateString();
+
+        newSaldoData = {
+          ...newSaldoData,
+          storeId: req.storeId,
+          date: latestDateDB.toISOString().slice(0, 10),
+          value: latestSaldo,
+        };
+
+        await Saldo.create(newSaldoData);
+      }
+
+      newSaldoData = {
+        ...newSaldoData,
+        storeId: req.storeId,
+        date: new Date().toISOString().slice(0, 10),
+        value: Number(latestSaldo) - req.body.total,
+      };
+      await Saldo.create(newSaldoData);
+    }
 
     res.send("Expense Berhasil Dibuat");
   }

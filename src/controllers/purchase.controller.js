@@ -56,6 +56,7 @@ const paymentDetailAttributes = [
 
 // Helper
 const { errorHandler } = require("../middleware");
+const { fn, col } = require("sequelize");
 
 // get all Purchase list
 exports.getPurchaseList = errorHandler.wrapAsync(async (req, res) => {
@@ -188,23 +189,79 @@ exports.createNewPurchasePayment = errorHandler.wrapAsync(async (req, res) => {
   } else {
     await PurchasePayment.create(newPaymentData);
 
-    newSaldoData = {
-      ...newSaldoData,
-      date: req.body.date,
-      value: -req.body.nominal,
-    };
-
-    await Saldo.create(newSaldoData);
-
     const updatedNominalPurchase = {
       dueNominal: req.body.nominal,
     };
 
     await Purchase.decrement(updatedNominalPurchase, {
       where: { purchaseId: req.body.purchaseId },
-    }).then((result) => {
-      console.log("result", result);
     });
+
+    const saldoData = await Saldo.findOne({
+      raw: true,
+      attributes: [
+        "saldoId",
+        "storeId",
+        [fn("max", col("date")), "latestDate"],
+        "value",
+      ],
+      where: { storeId: req.storeId },
+    });
+
+    let latestDate = new Date(saldoData["latestDate"]).toDateString();
+    let todayDate = new Date().toDateString();
+
+    if (!saldoData["saldoId"]) {
+      newSaldoData = {
+        ...newSaldoData,
+        storeId: req.storeId,
+        date: req.body.date,
+        value: req.body.nominal,
+      };
+
+      await Saldo.create(newSaldoData);
+    } else if (latestDate === todayDate) {
+      newSaldoData = {
+        ...newSaldoData,
+        value: saldoData["value"] - req.body.nominal,
+      };
+
+      await Saldo.update(newSaldoData, {
+        where: { saldoId: saldoData["saldoId"] },
+      });
+    } else {
+      let latestSaldo = saldoData["value"];
+      let latestDateDB = new Date(saldoData["latestDate"]);
+
+      let targetDay = new Date(
+        new Date().setDate(new Date().getDate() - 1)
+      ).toDateString();
+      let nextDay = latestDate;
+
+      while (nextDay != targetDay) {
+        nextDay = new Date(
+          latestDateDB.setDate(latestDateDB.getDate() + 1)
+        ).toDateString();
+
+        newSaldoData = {
+          ...newSaldoData,
+          storeId: req.storeId,
+          date: latestDateDB.toISOString().slice(0, 10),
+          value: latestSaldo,
+        };
+
+        await Saldo.create(newSaldoData);
+      }
+
+      newSaldoData = {
+        ...newSaldoData,
+        storeId: req.storeId,
+        date: new Date().toISOString().slice(0, 10),
+        value: latestSaldo - req.body.nominal,
+      };
+
+      await Saldo.create(newSaldoData);
+    }
 
     res.send("Purchase Payment Berhasil Diinput !");
   }
