@@ -207,8 +207,8 @@ exports.getInventoryData = errorHandler.wrapAsync(async (req, res) => {
   const outOfStockData = await Inventory.findAll({
     attributes: ["name", "quantity"],
     where: {
-      quantity: { [Op.lte]: 10 },
       storeId: req.storeId,
+      quantity: { [Op.lte]: 10 },
     },
   });
 

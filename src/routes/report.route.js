@@ -6,12 +6,16 @@ const reportController = require("../controllers/report.controller");
 
 // Helper
 const { requestValidator } = require("../middleware/requestValidator");
-const { authJwt, verifyStore } = require("../middleware");
+const { authJwt } = require("../middleware");
 
 // Get Dashboard Data
 router.get(
   "/profit-loss",
-  [authJwt.verifyToken],
+  [
+    requestValidator.profitLossSchema,
+    requestValidator.validateRequest,
+    authJwt.verifyToken,
+  ],
   reportController.getProfitLossData
 );
 

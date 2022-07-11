@@ -302,6 +302,11 @@ const stockOpnameSchema = [
     .withMessage("description Cannot Empty !"),
 ];
 
+const profitLossSchema = [
+  body("startDate").not().isEmpty().withMessage("Start Date Cannot Empty !"),
+  body("endDate").not().isEmpty().withMessage("End Date Cannot Empty !"),
+];
+
 const requestValidator = {
   // Validator (Passing Error state)
   validateRequest: validateRequest,
@@ -326,6 +331,8 @@ const requestValidator = {
   salesPaymentSchema: salesPaymentSchema,
   // Stock Opname
   stockOpnameSchema: stockOpnameSchema,
+  // Report Module
+  profitLossSchema: profitLossSchema,
 };
 
 module.exports = {

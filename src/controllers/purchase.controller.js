@@ -162,6 +162,7 @@ exports.createNewPurchase = errorHandler.wrapAsync(async (req, res) => {
       const newDetailData = {
         ...newPurchaseDetailData[i],
         purchaseId: lastPurchaseId,
+        storeId: req.storeId,
         quantityBuy: newPurchaseDetailData[i]["quantity"],
       };
 
@@ -182,7 +183,7 @@ exports.createNewPurchase = errorHandler.wrapAsync(async (req, res) => {
 
 // Create New Purchase Payment
 exports.createNewPurchasePayment = errorHandler.wrapAsync(async (req, res) => {
-  const newPaymentData = req.body;
+  const newPaymentData = { ...req.body, storeId: req.storeId };
   let newSaldoData = {};
   if (!Object.keys(newPaymentData).length) {
     throw new errorHandler.ExpressError(400, "Bad Request");

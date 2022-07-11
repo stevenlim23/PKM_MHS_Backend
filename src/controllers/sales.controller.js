@@ -145,6 +145,7 @@ exports.createNewSales = errorHandler.wrapAsync(async (req, res) => {
       const newDetailData = {
         ...newSalesDetailData[i],
         salesId: lastSalesId,
+        storeId: req.storeId,
         quantityBuy: newSalesDetailData[i]["quantity"],
       };
 
@@ -165,7 +166,7 @@ exports.createNewSales = errorHandler.wrapAsync(async (req, res) => {
 
 // Create New Purchase Payment
 exports.createNewSalesPayment = errorHandler.wrapAsync(async (req, res) => {
-  const newPaymentData = req.body;
+  const newPaymentData = { ...req.body, storeId: req.storeId };
   let newSaldoData = {};
 
   if (!Object.keys(newPaymentData).length) {
