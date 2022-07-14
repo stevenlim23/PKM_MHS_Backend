@@ -10,6 +10,13 @@ const { requestValidator } = require("../middleware/requestValidator");
 // get all Inventory
 router.get("/", [authJwt.verifyToken], inventoryController.getInventoryList);
 
+// Get All Inventory Service
+router.get(
+  "/product",
+  [authJwt.verifyToken],
+  inventoryController.getInventoryProductList
+);
+
 // // get Inventory by ID
 router.get(
   "/:id",

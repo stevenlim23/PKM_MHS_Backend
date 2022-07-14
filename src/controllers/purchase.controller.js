@@ -88,11 +88,21 @@ exports.getPurchaseDetail = errorHandler.wrapAsync(async (req, res) => {
     include: [
       {
         model: Supplier,
-        attributes: ["supplierId", "name"],
+        attributes: ["supplierId", "name", "telephone", "address", "email"],
       },
       {
         model: Store,
-        attributes: ["storeId", "name"],
+        attributes: [
+          "storeId",
+          "name",
+          "address",
+          "telephone",
+          "email",
+          "logo",
+          "region",
+          "currency",
+          "type",
+        ],
       },
       {
         model: PurchaseDetail,
@@ -154,9 +164,46 @@ exports.createNewPurchase = errorHandler.wrapAsync(async (req, res) => {
   if (!Object.keys(newPurchaseData).length) {
     throw new errorHandler.ExpressError(400, "Bad Request");
   } else {
-    await Purchase.create(newPurchaseData).then((result) => {
-      lastPurchaseId = result.purchaseId;
+    let refNumber = "";
+    const lastProductCode = await Purchase.findOne({
+      raw: true,
+      attributes: [[fn("max", col("refNumber")), "lastCode"]],
+      where: {
+        storeId: req.storeId,
+      },
     });
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    let todayDate = dd + mm + yyyy;
+
+    if (!lastProductCode["lastCode"]) {
+      refNumber = `PU/INV/${todayDate}/0001`;
+    } else {
+      let lastNumber = lastProductCode["lastCode"].slice(16);
+
+      let str = "" + (Number(lastNumber) + 1);
+      let pad = "0000";
+      refIncrementNum = pad.substring(0, pad.length - str.length) + str;
+
+      refNumber = `PU/INV/${todayDate}/${refIncrementNum}`;
+    }
+
+    await Purchase.create({ ...newPurchaseData, refNumber: refNumber }).then(
+      (result) => {
+        lastPurchaseId = result.purchaseId;
+      }
+    );
 
     for (let i = 0; i < newPurchaseDetailData.length; i++) {
       const newDetailData = {
@@ -188,7 +235,45 @@ exports.createNewPurchasePayment = errorHandler.wrapAsync(async (req, res) => {
   if (!Object.keys(newPaymentData).length) {
     throw new errorHandler.ExpressError(400, "Bad Request");
   } else {
-    await PurchasePayment.create(newPaymentData);
+    let generatedPaymentCode = "";
+    const lastProductCode = await PurchasePayment.findOne({
+      raw: true,
+      attributes: [[fn("max", col("code")), "lastCode"]],
+      where: {
+        storeId: req.storeId,
+      },
+    });
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    let todayDatePayment = dd + mm + yyyy;
+
+    if (!lastProductCode["lastCode"]) {
+      generatedPaymentCode = `PU/INV/${todayDatePayment}/PY/0001`;
+    } else {
+      let lastNumber = lastProductCode["lastCode"].slice(19);
+
+      let str = "" + (Number(lastNumber) + 1);
+      let pad = "0000";
+      refIncrementNum = pad.substring(0, pad.length - str.length) + str;
+
+      generatedPaymentCode = `PU/INV/${todayDatePayment}/PY/${refIncrementNum}`;
+    }
+
+    await PurchasePayment.create({
+      ...newPaymentData,
+      code: generatedPaymentCode,
+    });
 
     const updatedNominalPurchase = {
       dueNominal: req.body.nominal,

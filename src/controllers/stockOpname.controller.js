@@ -34,6 +34,7 @@ const listAttributes = ["stockOpnameId", "date", "description"];
 
 // Helper
 const { errorHandler } = require("../middleware");
+const { fn, col } = require("sequelize");
 
 // get all Stock Opname list
 exports.getStockOpnameList = errorHandler.wrapAsync(async (req, res) => {
@@ -115,7 +116,45 @@ exports.createNewStockOpname = errorHandler.wrapAsync(async (req, res) => {
   if (!Object.keys(newStockOpnameData).length) {
     throw new errorHandler.ExpressError(400, "Bad Request");
   } else {
-    await StockOpname.create(newStockOpnameData).then((result) => {
+    let refNumber = "";
+    const lastProductCode = await StockOpname.findOne({
+      raw: true,
+      attributes: [[fn("max", col("refNumber")), "lastCode"]],
+      where: {
+        storeId: req.storeId,
+      },
+    });
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    let todayDate = dd + mm + yyyy;
+
+    if (!lastProductCode["lastCode"]) {
+      refNumber = `SOP/${todayDate}/0001`;
+    } else {
+      let lastNumber = lastProductCode["lastCode"].slice(16);
+
+      let str = "" + (Number(lastNumber) + 1);
+      let pad = "0000";
+      refIncrementNum = pad.substring(0, pad.length - str.length) + str;
+
+      refNumber = `SOP/${todayDate}/${refIncrementNum}`;
+    }
+
+    await StockOpname.create({
+      ...newStockOpnameData,
+      refNumber: refNumber,
+    }).then((result) => {
       lastStockOpnameId = result.stockOpnameId;
     });
 

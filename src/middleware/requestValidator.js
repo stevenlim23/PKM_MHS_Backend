@@ -58,14 +58,14 @@ const userSchema = [
 
 const supplierSchema = [
   body("name").not().isEmpty().withMessage("Supplier Name Cannot Empty !"),
-  body("telephone")
-    .not()
-    .isEmpty()
-    .withMessage("Telephone Cannot Empty !")
-    .isInt()
-    .withMessage("Telephone Harus Angka !"),
-  body("address").not().isEmpty().withMessage("Address Cannot Empty !"),
-  body("email").not().isEmpty().withMessage("Email Cannot Empty !"),
+  // body("telephone"),
+  // .not()
+  // .isEmpty()
+  // .withMessage("Telephone Cannot Empty !")
+  // .isInt()
+  // .withMessage("Telephone Harus Angka !"),
+  // body("address").not().isEmpty().withMessage("Address Cannot Empty !"),
+  // body("email").not().isEmpty().withMessage("Email Cannot Empty !"),
 ];
 
 const storeSchema = [
@@ -103,12 +103,7 @@ const inventorySchema = [
 ];
 
 const expenseSchema = [
-  body("refNumber")
-    .not()
-    .isEmpty()
-    .withMessage("Ref Number Cannot Empty !")
-    .isInt()
-    .withMessage("Ref Number Harus Angka !"),
+  // body("refNumber").not().isEmpty().withMessage("Ref Number Cannot Empty !"),
   body("date").not().isEmpty().withMessage("Date Cannot Empty !"),
   body("name").not().isEmpty().withMessage("Expense Name Cannot Empty !"),
   body("total")
@@ -122,7 +117,7 @@ const expenseSchema = [
 const purchaseSchema = [
   body("supplierId").not().isEmpty().withMessage("Supplier ID Cannot Empty !"),
   body("storeId").not().isEmpty().withMessage("Store ID Cannot Empty !"),
-  body("refNumber").not().isEmpty().withMessage("RefNumber Cannot Empty !"),
+  // body("refNumber").not().isEmpty().withMessage("RefNumber Cannot Empty !"),
   body("transDate")
     .not()
     .isEmpty()
@@ -195,12 +190,12 @@ const purchasePaymentSchema = [
     .withMessage("Nominal Cannot Empty !")
     .isInt()
     .withMessage("Nominal Harus Angka !"),
-  body("code").not().isEmpty().withMessage("Code Cannot Empty !"),
+  // body("code").not().isEmpty().withMessage("Code Cannot Empty !"),
 ];
 
 const salesSchema = [
   body("storeId").not().isEmpty().withMessage("Store ID Cannot Empty !"),
-  body("refNumber").not().isEmpty().withMessage("RefNumber Cannot Empty !"),
+  // body("refNumber").not().isEmpty().withMessage("RefNumber Cannot Empty !"),
   body("transDate")
     .not()
     .isEmpty()
@@ -266,7 +261,7 @@ const salesPaymentSchema = [
     .withMessage("Nominal Cannot Empty !")
     .isInt()
     .withMessage("Nominal Harus Angka !"),
-  body("code").not().isEmpty().withMessage("Code Cannot Empty !"),
+  // body("code").not().isEmpty().withMessage("Code Cannot Empty !"),
 ];
 
 const stockOpnameSchema = [

@@ -31,6 +31,7 @@ const listAttributes = [
   "status",
   "dueNominal",
   "totalPayment",
+  "discount",
 ];
 
 const detailAttributes = [
@@ -41,6 +42,7 @@ const detailAttributes = [
   "status",
   "dueNominal",
   "totalPayment",
+  "discount",
 ];
 
 const salesDetailAttributes = [
@@ -79,7 +81,17 @@ exports.getSalesDetail = errorHandler.wrapAsync(async (req, res) => {
     include: [
       {
         model: Store,
-        attributes: ["storeId", "name"],
+        attributes: [
+          "storeId",
+          "name",
+          "address",
+          "telephone",
+          "email",
+          "logo",
+          "region",
+          "currency",
+          "type",
+        ],
       },
       {
         model: SalesDetail,
@@ -137,9 +149,46 @@ exports.createNewSales = errorHandler.wrapAsync(async (req, res) => {
   if (!Object.keys(newSalesData).length) {
     throw new errorHandler.ExpressError(400, "Bad Request");
   } else {
-    await Sales.create(newSalesData).then((result) => {
-      lastSalesId = result.salesId;
+    let refNumber = "";
+    const lastProductCode = await Sales.findOne({
+      raw: true,
+      attributes: [[fn("max", col("refNumber")), "lastCode"]],
+      where: {
+        storeId: req.storeId,
+      },
     });
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    let todayDate = dd + mm + yyyy;
+
+    if (!lastProductCode["lastCode"]) {
+      refNumber = `SA/INV/${todayDate}/0001`;
+    } else {
+      let lastNumber = lastProductCode["lastCode"].slice(16);
+
+      let str = "" + (Number(lastNumber) + 1);
+      let pad = "0000";
+      refIncrementNum = pad.substring(0, pad.length - str.length) + str;
+
+      refNumber = `SA/INV/${todayDate}/${refIncrementNum}`;
+    }
+
+    await Sales.create({ ...newSalesData, refNumber: refNumber }).then(
+      (result) => {
+        lastSalesId = result.salesId;
+      }
+    );
 
     for (let i = 0; i < newSalesDetailData.length; i++) {
       const newDetailData = {
@@ -172,7 +221,45 @@ exports.createNewSalesPayment = errorHandler.wrapAsync(async (req, res) => {
   if (!Object.keys(newPaymentData).length) {
     throw new errorHandler.ExpressError(400, "Bad Request");
   } else {
-    await SalesPayment.create(newPaymentData);
+    let generatedPaymentCode = "";
+    const lastProductCode = await SalesPayment.findOne({
+      raw: true,
+      attributes: [[fn("max", col("code")), "lastCode"]],
+      where: {
+        storeId: req.storeId,
+      },
+    });
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    let todayDatePayment = dd + mm + yyyy;
+
+    if (!lastProductCode["lastCode"]) {
+      generatedPaymentCode = `SA/INV/${todayDatePayment}/PY/0001`;
+    } else {
+      let lastNumber = lastProductCode["lastCode"].slice(19);
+
+      let str = "" + (Number(lastNumber) + 1);
+      let pad = "0000";
+      refIncrementNum = pad.substring(0, pad.length - str.length) + str;
+
+      generatedPaymentCode = `SA/INV/${todayDatePayment}/PY/${refIncrementNum}`;
+    }
+
+    await SalesPayment.create({
+      ...newPaymentData,
+      code: generatedPaymentCode,
+    });
 
     const updatedNominalSales = {
       dueNominal: req.body.nominal,

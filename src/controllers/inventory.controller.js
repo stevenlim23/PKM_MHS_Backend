@@ -31,6 +31,24 @@ exports.getInventoryList = errorHandler.wrapAsync(async (req, res) => {
   }
 });
 
+// get all Inventory Product list
+exports.getInventoryProductList = errorHandler.wrapAsync(async (req, res) => {
+  const inventoryListData = await Inventory.findAll({
+    where: {
+      is_deleted: 0,
+      isService: 0,
+      storeId: req.storeId,
+    },
+    attributes: fieldAttributes,
+  });
+
+  if (!inventoryListData.length) {
+    throw new errorHandler.ExpressError(404, "Inventory Tidak Ditemukan");
+  } else {
+    res.send(inventoryListData);
+  }
+});
+
 // get Inventory by ID
 exports.getInventoryListById = errorHandler.wrapAsync(async (req, res) => {
   const { id } = req.params;

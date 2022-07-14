@@ -42,7 +42,7 @@ exports.loginUser = errorHandler.wrapAsync(async (req, res) => {
         { id: user.userId, storeId: user.storeId },
         config.secret,
         {
-          expiresIn: "1h",
+          expiresIn: "24h",
         }
       );
 

@@ -166,6 +166,7 @@ exports.getTableData = errorHandler.wrapAsync(async (req, res) => {
       status: { [Op.or]: [1, 2] },
       storeId: req.storeId,
     },
+    order: [[col("dueDate"), "ASC"]],
   });
 
   // Receivable Data
@@ -182,6 +183,7 @@ exports.getTableData = errorHandler.wrapAsync(async (req, res) => {
       status: { [Op.or]: [1, 2] },
       storeId: req.storeId,
     },
+    order: [[col("dueDate"), "ASC"]],
   });
 
   // Assemble Final Dashboard Data
@@ -208,13 +210,15 @@ exports.getInventoryData = errorHandler.wrapAsync(async (req, res) => {
     attributes: ["name", "quantity"],
     where: {
       storeId: req.storeId,
+      isService: 0,
+      is_deleted: 0,
       quantity: { [Op.lte]: 10 },
     },
   });
 
   // Most Popular inventory
   const mostPopularInventory = await SalesDetail.findAll({
-    attributes: ["quantityBuy"],
+    attributes: [[fn("SUM", col("quantityBuy")), "quantityBuy"]],
     include: [
       {
         as: "inventoryData",
@@ -224,6 +228,7 @@ exports.getInventoryData = errorHandler.wrapAsync(async (req, res) => {
     ],
     limit: 10,
     order: [[col("quantityBuy"), "DESC"]],
+    group: ["inventoryData.name"],
     where: { storeId: req.storeId },
   });
 

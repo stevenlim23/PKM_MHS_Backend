@@ -17,6 +17,9 @@ module.exports = (sequelize, Sequelize) => {
       storeId: {
         type: DataTypes.STRING,
       },
+      refNumber: {
+        type: DataTypes.STRING,
+      },
       date: {
         type: DataTypes.DATE,
       },

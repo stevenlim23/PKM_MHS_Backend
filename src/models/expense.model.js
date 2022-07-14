@@ -15,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
         type: DataTypes.STRING,
       },
       refNumber: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
       },
       date: {
         type: DataTypes.DATE,

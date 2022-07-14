@@ -107,17 +107,17 @@ exports.getProfitLossData = errorHandler.wrapAsync(async (req, res) => {
     },
   });
 
-  const expenseData = await Expense.findAll({
-    raw: true,
-    attributes: ["name", "total"],
-    where: {
-      storeId: req.storeId,
-      date: {
-        [Op.gte]: req.body.startDate,
-        [Op.lte]: req.body.endDate,
-      },
-    },
-  });
+  // const expenseData = await Expense.findAll({
+  //   raw: true,
+  //   attributes: ["name", "total"],
+  //   where: {
+  //     storeId: req.storeId,
+  //     date: {
+  //       [Op.gte]: req.body.startDate,
+  //       [Op.lte]: req.body.endDate,
+  //     },
+  //   },
+  // });
 
   let PurchaseFinalNomimal = purchaseTotalData[0]["totalPurchase"]
     ? purchaseTotalData[0]["totalPurchase"]
@@ -148,8 +148,10 @@ exports.getProfitLossData = errorHandler.wrapAsync(async (req, res) => {
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     storeId: req.storeId,
-    previousBalance: Number(previousBalanceData["value"]),
-    profitLoss: Number(profitLossData["value"]),
+    previousBalance: Number(
+      previousBalanceData ? previousBalanceData["value"] : 0
+    ),
+    profitLoss: Number(profitLossData ? profitLossData["value"] : 0),
     income: incomeFinalData,
     expense: expenseFinalData,
   });

@@ -39,7 +39,42 @@ exports.createNewExpense = errorHandler.wrapAsync(async (req, res) => {
   if (!Object.keys(newExpenseData).length) {
     throw new errorHandler.ExpressError(400, "Bad Request");
   } else {
-    await Expense.create(newExpenseData);
+    let refNumber = "";
+    const lastProductCode = await Expense.findOne({
+      raw: true,
+      attributes: [[fn("max", col("refNumber")), "lastCode"]],
+      where: {
+        storeId: req.storeId,
+      },
+    });
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    let todayDateExpense = dd + mm + yyyy;
+
+    if (!lastProductCode["lastCode"]) {
+      refNumber = `EXP/${todayDateExpense}/0001`;
+    } else {
+      let lastNumber = lastProductCode["lastCode"].slice(16);
+
+      let str = "" + (Number(lastNumber) + 1);
+      let pad = "0000";
+      refIncrementNum = pad.substring(0, pad.length - str.length) + str;
+
+      refNumber = `EXP/${todayDateExpense}/${refIncrementNum}`;
+    }
+
+    await Expense.create({ ...newExpenseData, refNumber: refNumber });
 
     const saldoData = await Saldo.findOne({
       raw: true,
