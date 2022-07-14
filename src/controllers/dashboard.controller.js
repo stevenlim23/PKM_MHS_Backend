@@ -232,12 +232,28 @@ exports.getInventoryData = errorHandler.wrapAsync(async (req, res) => {
     where: { storeId: req.storeId },
   });
 
+  // Total Inventory
+  const totalInventory = await Inventory.findOne({
+    raw: true,
+    attributes: [[fn("COUNT", col("name")), "totalInventory"]],
+    where: { storeId: req.storeId },
+  });
+
+  // Total Supplier
+  const totalSupplier = await Supplier.findOne({
+    raw: true,
+    attributes: [[fn("COUNT", col("name")), "totalSupplier"]],
+    where: { storeId: req.storeId },
+  });
+
   // Assemble Final Dashboard Data
   let finalData = {};
   Object.assign(finalData, {
     yearPeriod: `January - December ${new Date().getFullYear()}`,
     outOfStock: outOfStockData,
     mostSoldStock: mostPopularInventory,
+    totalInventory: totalInventory ? totalInventory["totalInventory"] : 0,
+    totalSupplier: totalSupplier ? totalSupplier["totalSupplier"] : 0,
   });
 
   if (!finalData)
