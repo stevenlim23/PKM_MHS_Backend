@@ -266,7 +266,7 @@ const salesPaymentSchema = [
 
 const stockOpnameSchema = [
   body("date").not().isEmpty().withMessage("Date Cannot Empty !"),
-  body("description").not().isEmpty().withMessage("Description Cannot Empty !"),
+  // body("description").not().isEmpty().withMessage("Description Cannot Empty !"),
   // Check Item Detail
   body("itemDetail").isArray().withMessage("Item Detail Must An Array"),
   body("itemDetail.*.inventoryId")

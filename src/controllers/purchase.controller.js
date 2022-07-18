@@ -301,7 +301,7 @@ exports.createNewPurchasePayment = errorHandler.wrapAsync(async (req, res) => {
       newSaldoData = {
         ...newSaldoData,
         storeId: req.storeId,
-        date: req.body.date,
+        date: new Date(req.body.date),
         value: req.body.nominal,
       };
 

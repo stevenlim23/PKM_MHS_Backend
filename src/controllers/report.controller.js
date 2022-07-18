@@ -35,8 +35,8 @@ exports.getProfitLossData = errorHandler.wrapAsync(async (req, res) => {
     where: {
       storeId: req.storeId,
       date: {
-        [Op.gte]: req.body.startDate,
-        [Op.lte]: req.body.endDate,
+        [Op.gte]: new Date(req.body.startDate),
+        [Op.lte]: new Date(req.body.endDate),
       },
     },
   });
@@ -48,24 +48,11 @@ exports.getProfitLossData = errorHandler.wrapAsync(async (req, res) => {
     where: {
       storeId: req.storeId,
       transDate: {
-        [Op.gte]: req.body.startDate,
-        [Op.lte]: req.body.endDate,
+        [Op.gte]: new Date(req.body.startDate),
+        [Op.lte]: new Date(req.body.endDate),
       },
     },
   });
-
-  // const incomeDetailData = await Sales.findAll({
-  //   raw: true,
-  //   attributes: ["transDate", ["totalPayment", "total"]],
-  //   where: {
-  //     storeId: req.storeId,
-  //     transDate: {
-  //       [Op.gte]: req.body.startDate,
-  //       [Op.lte]: req.body.endDate,
-  //     },
-  //   },
-  //   group: ["transDate"],
-  // });
 
   let incomeFinalData = {};
   Object.assign(incomeFinalData, {
@@ -89,8 +76,8 @@ exports.getProfitLossData = errorHandler.wrapAsync(async (req, res) => {
     where: {
       storeId: req.storeId,
       transDate: {
-        [Op.gte]: req.body.startDate,
-        [Op.lte]: req.body.endDate,
+        [Op.gte]: new Date(req.body.startDate),
+        [Op.lte]: new Date(req.body.endDate),
       },
     },
   });
@@ -101,23 +88,11 @@ exports.getProfitLossData = errorHandler.wrapAsync(async (req, res) => {
     where: {
       storeId: req.storeId,
       date: {
-        [Op.gte]: req.body.startDate,
-        [Op.lte]: req.body.endDate,
+        [Op.gte]: new Date(req.body.startDate),
+        [Op.lte]: new Date(req.body.endDate),
       },
     },
   });
-
-  // const expenseData = await Expense.findAll({
-  //   raw: true,
-  //   attributes: ["name", "total"],
-  //   where: {
-  //     storeId: req.storeId,
-  //     date: {
-  //       [Op.gte]: req.body.startDate,
-  //       [Op.lte]: req.body.endDate,
-  //     },
-  //   },
-  // });
 
   let PurchaseFinalNomimal = purchaseTotalData[0]["totalPurchase"]
     ? purchaseTotalData[0]["totalPurchase"]

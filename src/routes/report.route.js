@@ -9,7 +9,7 @@ const { requestValidator } = require("../middleware/requestValidator");
 const { authJwt } = require("../middleware");
 
 // Get Dashboard Data
-router.get(
+router.post(
   "/profit-loss",
   [
     requestValidator.profitLossSchema,
